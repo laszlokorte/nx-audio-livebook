@@ -4,21 +4,26 @@
 
 ```elixir
 Mix.install([
-  {:nx, "~> 0.11.0"},
-  {:kino, "~> 0.18.0"},
+  {:nx, "~> 0.12.0"},
+  {:kino, "~> 0.19.0"},
   {:image, "~> 0.62.1"},
   {:kino_vega_lite, "~> 0.1.9"},
   {:tucan, "~> 0.5.1"},
-  {:kino_zoetrope, "~> 0.16.0"},
-  {:kino_rewind, "~> 0.1.0"},
+  {:kino_zoetrope, "~> 0.25.0"},
+  {:kino_rewind, "~> 0.3.1"},
   {:nx_audio, "~> 0.3.1"},
-  {:colorex, "~> 1.0"}
+  {:colorex, "~> 1.0"},
+  {:exla, "~> 0.12.0"},
 ])
 
 Kino.nothing()
 ```
 
 ## Helper
+
+```elixir
+Nx.global_default_backend(EXLA.Backend)
+```
 
 ## Audio
 
@@ -32,7 +37,11 @@ Kino.nothing()
 ```
 
 ```elixir
-NxAudio.Visualizations.Wave.plot!(audio |> Nx.slice_along_axis(0,1000, axis: 1))
+NxAudio.Visualizations.Wave.plot!(
+  audio |> Nx.slice_along_axis(500, 700, axis: 1),
+  width: 600,
+  height: 300
+)
 ```
 
 ```elixir
@@ -94,7 +103,7 @@ NxAudio.Visualizations.Spectrogram.plot!(
 end)
 |> KinoZoetrope.TensorStack.new(
   cmap: :viridis,
-  titel: "Magnitude Spectrogram",
+  title: "Magnitude Spectrogram",
   labels: ["STFT (Linear Freq)", "Mel (Log Freq)"],
   resize: [true, false],
   size: [350, 350]
@@ -118,7 +127,7 @@ end)
   cmap: :viridis,
   cmaps: ["viridis", "blues", "greys"],
   size: 300,
-  titel: "Magnitude Spectrogram",
+  title: "Magnitude Spectrogram",
   labels: ["STFT (Linear Freq Scale)", "Mel (Log Freq Scale)"]
 )
 ```
